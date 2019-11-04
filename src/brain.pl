@@ -119,18 +119,28 @@ pista(Tipo) :- not(ocupada(p3)), avion_g(Tipo), write("Permiso concedido. Despej
                   assertz(ocupada(p3)), !.
 
 mayday :- write("Identifíquese."),
+          read(_),
           write_ln("¿Cuál es su emergencia?"),
+          read(_),
           write_ln("¿Cuál es su velocidad acutal?"),
+          read(_),
           write_ln("¿Cuál es su posición acutal?"),
+          read(_),
           write_ln("¿Cuál es el tipo de su avión?"),
+          read(_),
           write("Pistas despejadas y servicios de emergencia  llamados, aterrice en la pista P3").
 
 
 secuestro :- write("Identifíquese."),
+             read(_),
              write_ln("¿Cuál es su velocidad acutal?"),
+             read(_),
              write_ln("¿Cuál es su posición acutal?"),
+             read(_),
              write_ln("¿Cuál es el tipo de su avión?"),
+             read(_),
              write("Dirjase a las siguientes coordenadas: "),
+             read(_),
              write_ln("ALGO").
 
 
