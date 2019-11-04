@@ -1,0 +1,18 @@
+se corre la función start
+  mensaje de bienvenida
+  espera entrada del usuario
+  recibe entrada de usuario
+  analiza entrada de usuario 
+    descomponerla en tokens
+    análisis sintáctico
+    análisis semántico
+    generar AST
+    recorrer arbol y se hacen las llamadas correspondientes
+      en cada llamada:
+        se busca la instrucción que unifique con la llamada
+          si unifica, la ejecuta
+          si no unifica, se cae al pozo
+
+
+
+

@@ -1,0 +1,14 @@
+aterrizar:- at_tipo(), at_velocidad(), at_direccion(), at_pista(Tipo, Dir), at_nombre().
+
+despegar :- de_tipo(), de_pista(), de_nombre().
+
+secuestro :- se_nombre(), se_pos(), se_velocidad().
+
+mayaday :- ma_nombre(), ma_pos(), ma_velocidad().
+
+
+
+at_tipo(Tipo) :- db_tipo("mae", X).
+
+at_pista("grand", "asdf")
+db_tipo("mae" , "AVION").
