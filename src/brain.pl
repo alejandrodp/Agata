@@ -9,7 +9,6 @@
  *    ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═╝
  *
  */
-
 %-------------------------------REGLAS SINTÁCTICAS------------------------------
 oracion(tree(P0, PP, P1, P2, P3, P4)) --> saludo(P0), program(PP), articulo(P1), lugar(P2), pregunta(P3), comando(P4), !.
 oracion(tree(P0, P1, P2, P3, P4)) --> saludo(P0), articulo(P1), lugar(P2), pregunta(P3), comando(P4), !.
@@ -179,12 +178,13 @@ semantica(Tree, Result) :-
   Head =.. [Tipo|Valores],
   (Tipo = saludo -> (expr_saludo(Valores, Args), Result = []) ;
     Tipo = solicitud -> (expr_solicitud(Valores, Args), Result = []) ;
-      Tipo = despedida -> (expr_despedida(Valores), Result = []) ;
+      Tipo = despedida -> (expr_despedida(Valores, Args), Result = []) ;
         Tipo = ayuda -> (expr_ayuda(Valores), Result = []) ;
           Tipo = pronombre -> expr_datos(Valores, Args, Result) ;
             Tipo = sustantivo -> expr_datos(Valores, Args, Result) ;
               Tipo = articulo -> expr_solicitud(Valores, Args) ;
-                Tipo = elemento -> expr_datos(Valores, Args, Result)).
+                Tipo = elemento -> expr_datos(Valores, Args, Result) ;
+                  (write_ln("Error, el texto no tiene sentido, repita por favor"), read(IN), go(IN, _))).
 
 /*
 Reglas para analizar expresiones de saludos.
@@ -196,10 +196,10 @@ Argumentos:
 
 */
 expr_saludo(_, []) :-
-  write("Llamar saludo"), !.
+  write("Bienvenido, ¿en que puedo ayudarle?"), nl, read(Input), go(Input, _), !.
 
 expr_saludo(_, [program(_)]) :-
-  write("Llamar saludo"), !.
+  write("Bienvenido, ¿en que puedo ayudarle?"), nl, read(Input), go(Input, _), !.
 
 expr_saludo(_, [program(_),S]) :-
   S =.. [_|Rest],
@@ -212,16 +212,16 @@ expr_saludo(_, [solicitud(verbo(_), articulo(_), comando(C))]) :-
   expr_solicitud([verbo(_), articulo(_), comando(C)], []), !.
 
 expr_saludo(_, [articulo(_), lugar(_), pregunta(_), comando(C)]) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  expr_solicitud([verbo(_), articulo(_), comando(C)], []), !.
 
 expr_saludo(_, [program(_), articulo(_), lugar(_), pregunta(_), comando(C)]) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  expr_solicitud([verbo(_), articulo(_), comando(C)], []), !.
 
 expr_saludo(_, [pregunta(_), comando(C)]) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  expr_solicitud([verbo(_), articulo(_), comando(C)], []), !.
 
 expr_saludo(_, [program(_), pregunta(_), comando(C)]) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  expr_solicitud([verbo(_), articulo(_), comando(C)], []), !.
 
 /*
 Reglas para analizar comandos.
@@ -232,13 +232,13 @@ Argumentos:
 
 */
 expr_solicitud([verbo(_), articulo(_), comando(C)], []) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  call(C), !.
 
 expr_solicitud([verbo(_), comando(C)], []) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  call(C), !.
 
 expr_solicitud([_], [lugar(_), pregunta(_), comando(C)]) :-
-  write("Llamar a solicitud\nComando: "), write(C), !.
+  call(C), !.
 
 /*
 Reglas para analizar expresiones de despedidas.
@@ -247,11 +247,20 @@ Argumentos:
   Primer parámetro: Datos de la despedida, permite chequear si se realizó un cambio y fuera.
 
 */
-expr_despedida([final(_), articulo(_), final(_)]) :-
+expr_despedida([final(_), articulo(_), final(_)], _) :-
   write("Llamar a despedida de cambio y fuera\n"), !.
 
-expr_despedida(_) :-
-  write("Llamar a despedida\n"), !.
+expr_despedida([ok], _) :-
+  write_ln("Adios"), !.
+
+expr_despedida([gracias], _) :-
+  write_ln("Con gusto"), !.
+
+expr_despedida([adios], _) :-
+  write_ln("Adios, que tenga buen viaje"), !.
+
+expr_despedida([estado(_), adjetivo(_)], _) :-
+  write_ln("Adios, que tenga buen viaje"), !.
 
 /*
 Reglas para analizar expresiones de ayuda.
@@ -315,11 +324,11 @@ avion_p(embraer_phenom).
 
 avion_m(boeing_717).
 avion_m(embraer_190).
-avion_m(airbus_A220).
+avion_m(airbus_a220).
 
 avion_g(boeing_747).
-avion_g(airbus_A340).
-avion_g(airbus_A380).
+avion_g(airbus_a340).
+avion_g(airbus_a380).
 
 
 maq(A,B) :- A > B.
@@ -454,6 +463,3 @@ secuestro :- write("Identifíquese."),
              write("Dirjase a las siguientes coordenadas: "),
              read(_),
              write_ln("ALGO").
-
-
-
