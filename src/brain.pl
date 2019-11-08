@@ -470,3 +470,6 @@ cambio_y_fuera :- write("¿Cuál es su nombre?"),
                   read(Input),
                   go(Input,Payload),first(Payload, Nombre),
                   retract(ocupada(_,Nombre)).
+
+start :- write("Hola, soy AGATA, ¿en que puedo ayudarle?"), nl,
+         read(Input), go(Input, _).
