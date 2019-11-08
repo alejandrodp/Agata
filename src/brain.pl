@@ -336,7 +336,7 @@ maq(A,B) :- A > B.
 
 ocupada(algunaPista,porAlguien).
 :- dynamic
-        ocupada/1.
+        ocupada/2.
 
 pista(Tipo, _, Nombre) :- not(ocupada(p1,_)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P1."),
                   assertz(ocupada(p1,Nombre)), !.
