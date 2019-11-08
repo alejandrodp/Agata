@@ -178,7 +178,7 @@ semantica(Tree, Result) :-
   Head =.. [Tipo|Valores],
   (Tipo = saludo -> (expr_saludo(Valores, Args), Result = []) ;
     Tipo = solicitud -> (expr_solicitud(Valores, Args), Result = []) ;
-      Tipo = despedida -> (expr_despedida(Valores, Args), Result = []) ;
+      Tipo = despedida -> (expr_despedida(Valores), Result = []) ;
         Tipo = ayuda -> (expr_ayuda(Valores), Result = []) ;
           Tipo = pronombre -> expr_datos(Valores, Args, Result) ;
             Tipo = sustantivo -> expr_datos(Valores, Args, Result) ;
@@ -247,19 +247,19 @@ Argumentos:
   Primer parámetro: Datos de la despedida, permite chequear si se realizó un cambio y fuera.
 
 */
-expr_despedida([final(_), articulo(_), final(_)], _) :-
+expr_despedida([final(_), articulo(_), final(_)]) :-
   write("Llamar a despedida de cambio y fuera\n"), !.
 
-expr_despedida([ok], _) :-
+expr_despedida([ok]) :-
   write_ln("Adios"), !.
 
-expr_despedida([gracias], _) :-
+expr_despedida([gracias]) :-
   write_ln("Con gusto"), !.
 
-expr_despedida([adios], _) :-
+expr_despedida([adios]) :-
   write_ln("Adios, que tenga buen viaje"), !.
 
-expr_despedida([estado(_), adjetivo(_)], _) :-
+expr_despedida([estado(_), adjetivo(_)]) :-
   write_ln("Adios, que tenga buen viaje"), !.
 
 /*
@@ -281,6 +281,7 @@ Reglas para analizar entradas con datos del usuario.
 Argumentos:
   Primer parámetro: Identificador para analizar si es un dato del usuario o un dato general.
   Segundo parámetro: Expresión sintáctica de la oración.
+  Tercer parámetro: Variable para unificar con los datos del usuario.
 
 */
 expr_datos([mi], [sustantivo(_), articulo(_), elemento(EL)], Result) :-

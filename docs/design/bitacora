@@ -1,0 +1,9 @@
+|    Fecha   |                                             Actividad                                             | Responsable |
+|:----------:|:-------------------------------------------------------------------------------------------------:|:-----------:|
+| 02/11/2019 | Sistema experto: Se añade la versión inicial de la función aterrizar                              |    Fabián   |
+| 02/11/2019 | Parser: Añade reglas sintácticas                                                                  |  Alejandro  |
+| 03/11/2019 | Parser: Añade analizador semántico y más reglas sintácticas                                       |  Alejandro  |
+| 04/11/2019 | Sistema experto: Añade funciones despegar, mayday y secuestro, también finaliza función aterrizar |    Fabián   |
+| 04/11/2019 | Documentación: Añade diagrama de flujo del proyecto                                               |  Alejandro  |
+| 04/11/2019 | General: Unifica código en un sólo archivo y conecta parser con el sistema experto                |  Alejandro  |
+| 05/11/2019 | Sistema experto: Repara bug en los nombres de aviones                                             |  Alejandro  |
