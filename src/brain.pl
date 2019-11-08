@@ -333,38 +333,38 @@ avion_g(airbus_a380).
 
 maq(A,B) :- A > B.
 
-ocupada(algunaPista).
+ocupada(algunaPista,porAlguien).
 :- dynamic
         ocupada/1.
 
-pista(Tipo, _) :- not(ocupada(p1)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P1."),
-                  assertz(ocupada(p1)), !.
+pista(Tipo, _, Nombre) :- not(ocupada(p1,_)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P1."),
+                  assertz(ocupada(p1,Nombre)), !.
 
-pista(Tipo, eo) :- not(ocupada(p21)), avion_m(Tipo), write("Permiso concedido. Aterrice en la pista P2-1."),
-                   assertz(ocupada(p21));
+pista(Tipo, eo, Nombre) :- not(ocupada(p21,_)), avion_m(Tipo), write("Permiso concedido. Aterrice en la pista P2-1."),
+                   assertz(ocupada(p21,Nombre));
 
-                   not(ocupada(p21)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P2-1."),
-                   assertz(ocupada(p21)), !.
+                   not(ocupada(p21,_)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P2-1."),
+                   assertz(ocupada(p21,Nombre)), !.
 
-pista(Tipo, oe) :- not(ocupada(p22)), avion_m(Tipo), write("Permiso concedido. Aterrice en la pista P2-2."),
-                   assertz(ocupada(p22));
-                   not(ocupada(p22)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P2-2."),
-                   assertz(ocupada(p22)), !.
+pista(Tipo, oe, Nombre) :- not(ocupada(p22,_)), avion_m(Tipo), write("Permiso concedido. Aterrice en la pista P2-2."),
+                   assertz(ocupada(p22,Nombre));
+                   not(ocupada(p22,_)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P2-2."),
+                   assertz(ocupada(p22,Nombre)), !.
 
-pista(Tipo, _) :- not(ocupada(p3)), avion_g(Tipo), write("Permiso concedido. Aterrice en la pista P3."),
-                  assertz(ocupada(p3));
-                  not(ocupada(p3)), avion_m(Tipo), write("Permiso concedido. Aterrice en la pista P3."),
-                  assertz(ocupada(p3));
-                  not(ocupada(p3)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P3."),
-                  assertz(ocupada(p3)), !.
+pista(Tipo, _, Nombre) :- not(ocupada(p3,_)), avion_g(Tipo), write("Permiso concedido. Aterrice en la pista P3."),
+                  assertz(ocupada(p3,Nombre));
+                  not(ocupada(p3,_)), avion_m(Tipo), write("Permiso concedido. Aterrice en la pista P3."),
+                  assertz(ocupada(p3,Nombre));
+                  not(ocupada(p3,_)), avion_p(Tipo), write("Permiso concedido. Aterrice en la pista P3."),
+                  assertz(ocupada(p3,Nombre)), !.
 
 
 /*  Función general de aterrizaje,
  *  llama a todas las demás funciones para
  *  verificar si el aterrizaje es permitido y asigna una pista.
  */
-aterrizar :- at_nombre, at_tipo(Tipo), at_velocidad, at_direccion(Dir),
-             revisar_viento, revisar_peso, pista(Tipo, Dir).
+aterrizar :- at_nombre(Nombre), at_tipo(Tipo), at_velocidad, at_direccion(Dir),
+             revisar_viento, revisar_peso, pista(Tipo, Dir, Nombre).
 
 
 revisar_viento :- write_ln("¿Cuál es la velocidad del viento actual?"), read(Vel), go(Vel, R), first(R, N), velocidad_viento(N).
@@ -382,7 +382,7 @@ first([E|_], E).
 
 /*  Obtiene el nombre del piloto.
  */
-at_nombre :- write_ln("¿Cuál es su nombre?"),
+at_nombre(Name) :- write_ln("¿Cuál es su nombre?"),
              read(Nombre), go(Nombre, Result), write("¡BIenvenido "),
              first(Result, Name), write(Name), write_ln("!").
 
@@ -415,29 +415,29 @@ at_direccion(Dir) :- write_ln("¿Cuál es su dirección actual?"),
  *  llama a todas las demás funciones para
  *  verificar si el despegue es permitido y asigna una pista.
  */
-despegar :- at_nombre, revisar_viento, revisar_peso,
-            at_tipo(Tipo), pista(Tipo).
+despegar :- at_nombre(Nombre), revisar_viento, revisar_peso,
+            at_tipo(Tipo), pista(Tipo, Nombre).
 
-pista(Tipo) :- not(ocupada(p1)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P1."),
-                  assertz(ocupada(p1)), !.
+pista(Tipo, Nombre) :- not(ocupada(p1,_)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P1."),
+                  assertz(ocupada(p1,Nombre)), !.
 
-pista(Tipo) :- not(ocupada(p21)), avion_m(Tipo), write("Permiso concedido. Despegue desde la pista P2-1."),
-                   assertz(ocupada(p21));
+pista(Tipo, Nombre) :- not(ocupada(p21,_)), avion_m(Tipo), write("Permiso concedido. Despegue desde la pista P2-1."),
+                   assertz(ocupada(p21,Nombre));
 
-                   not(ocupada(p21)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P2-1."),
-                   assertz(ocupada(p21)), !.
+                   not(ocupada(p21,_)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P2-1."),
+                   assertz(ocupada(p21,Nombre)), !.
 
-pista(Tipo) :- not(ocupada(p22)), avion_m(Tipo), write("Permiso concedido. Despegue desde la pista P2-2."),
-                   assertz(ocupada(p22));
-                   not(ocupada(p22)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P2-2."),
-                   assertz(ocupada(p22)), !.
+pista(Tipo, Nombre) :- not(ocupada(p22,_)), avion_m(Tipo), write("Permiso concedido. Despegue desde la pista P2-2."),
+                   assertz(ocupada(p22,Nombre));
+                   not(ocupada(p22,_)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P2-2."),
+                   assertz(ocupada(p22,Nombre)), !.
 
-pista(Tipo) :- not(ocupada(p3)), avion_g(Tipo), write("Permiso concedido. Despegue desde la pista P3."),
-                  assertz(ocupada(p3));
-                  not(ocupada(p3)), avion_m(Tipo), write("Permiso concedido. Despegue desde la pista P3."),
-                  assertz(ocupada(p3));
-                  not(ocupada(p3)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P3."),
-                  assertz(ocupada(p3)), !.
+pista(Tipo, Nombre) :- not(ocupada(p3,_)), avion_g(Tipo), write("Permiso concedido. Despegue desde la pista P3."),
+                  assertz(ocupada(p3,Nombre));
+                  not(ocupada(p3,_)), avion_m(Tipo), write("Permiso concedido. Despegue desde la pista P3."),
+                  assertz(ocupada(p3,Nombre));
+                  not(ocupada(p3,_)), avion_p(Tipo), write("Permiso concedido. Despegue desde la pista P3."),
+                  assertz(ocupada(p3,Nombre)), !.
 
 mayday :- write("Identifíquese."),
           read(_),
@@ -463,3 +463,9 @@ secuestro :- write("Identifíquese."),
              write("Dirjase a las siguientes coordenadas: "),
              read(_),
              write_ln("ALGO").
+
+
+cambio_y_fuera :- write("¿Cuál es su nombre?"),
+                  read(Input),
+                  go(Input,Payload),first(Payload, Nombre),
+                  retract(ocupada(_,Nombre)).
