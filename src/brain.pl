@@ -67,6 +67,7 @@ sustantivo(sustantivo(peso)) --> [word(peso)].
 sustantivo(sustantivo(permiso)) --> [word(permiso)].
 sustantivo(sustantivo(posicion)) --> [word(posicion)].
 
+
 despedida(despedida(ok)) --> [word(ok)].
 despedida(despedida(gracias)) --> [word(gracias)].
 despedida(despedida(adios)) --> [word(adios)].
@@ -113,6 +114,7 @@ comando(comando(aterrizar)) --> [word(aterrizar)].
 comando(comando(despegar)) --> [word(despegar)].
 
 elemento(elemento(EL)) --> [word(EL)].
+elemento(elemento(EL)) --> [number(EL)].
 
 
 
@@ -248,7 +250,7 @@ Argumentos:
 
 */
 expr_despedida([final(_), articulo(_), final(_)]) :-
-  write("Llamar a despedida de cambio y fuera\n"), !.
+  cambio_y_fuera, !.
 
 expr_despedida([ok]) :-
   write_ln("Adios"), !.
@@ -270,10 +272,10 @@ Argumentos:
 
 */
 expr_ayuda([mayday]) :-
-  write("Llamar a ayuda Mayday\n"), !.
+  mayday, !.
 
 expr_ayuda([7500]) :-
-  write("Llamar a ayuda 7500\n"), !.
+  secuestro, !.
 
 /*
 Reglas para analizar entradas con datos del usuario.
@@ -466,7 +468,7 @@ secuestro :- write("Identifíquese."),
              write_ln("ALGO").
 
 
-cambio_y_fuera :- write("¿Cuál es su nombre?"),
+cambio_y_fuera :- write("¿Cuál es su nombre?"), nl,
                   read(Input),
                   go(Input,Payload),first(Payload, Nombre),
                   retract(ocupada(_,Nombre)).
